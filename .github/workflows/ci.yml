@@ -3,14 +3,13 @@ name: build and integrate image to dockerhub
 on:
   push:
     branches: [main]
-    # confirmation avant push vers dockerhub
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       # Pour verifier si le repo existe
-- name: checkout repository
+      - name: checkout repository
         uses: actions/checkout@v3
       - name: build docker image
         run: |
