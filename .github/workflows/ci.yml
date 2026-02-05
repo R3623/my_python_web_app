@@ -6,18 +6,20 @@ on:
     # confirmation avant push vers dockerhub
   workflow_dispatch:
 jobs:
-  steps:
-  # Pour verifier si le repo existe
-    - name : checkout repository 
-      uses : actions/checkout@v3
-    - name : build docker image
-      run : |
-        docker build -t ricardo403/my_python_web_app:latest .
-    - name : Login to dockerhub
-      uses : docker/login-action@v2
-      with :
-        username : ricardo403
-        password : ${{ secrets.DOCKER_PASSWORD }}
-    - name : push to dockerhub
-      run : |
-        docker push ricardo403/my_python_web_app
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Pour verifier si le repo existe
+- name: checkout repository
+        uses: actions/checkout@v3
+      - name: build docker image
+        run: |
+          docker build -t ricardo403/my_python_web_app:latest .
+      - name: Login to dockerhub
+        uses: docker/login-action@v2
+        with:
+          username: ricardo403
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: push to dockerhub
+        run: |
+          docker push ricardo403/my_python_web_app
