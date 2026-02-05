@@ -1,0 +1,15 @@
+# Lancer un docker file avec docker-compose
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - SECRET_KEY=123567890
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
+    restart: unless-stopped
