@@ -47,9 +47,13 @@ jobs:
           # On vérifie s'il existe pour éviter une erreur "No such container"
           if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
               echo "[INFO] Arrêt et suppression de l'ancien conteneur..."
-              docker stop $CONTAINER_NAME
-              docker rm $CONTAINER_NAME
+              docker stop $CONTAINER_NAME 2>/dev/null || true
+              docker rm $CONTAINER_NAME 2>/dev/null || true
           fi
+
+          # 2a. Nettoyer les conteneurs orphelins qui pourraient bloquer le port
+          echo "[INFO] Suppression des conteneurs orphelins..."
+          docker ps -aq --filter "status=exited" | xargs -r docker rm
 
           # 3. Vérification/Création du réseau
           docker network create $NETWORK_NAME 2>/dev/null || true
