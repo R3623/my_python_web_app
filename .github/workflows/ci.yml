@@ -55,7 +55,13 @@ jobs:
           echo "[INFO] Suppression des conteneurs orphelins..."
           docker ps -aq --filter "status=exited" | xargs -r docker rm
 
+          # 2b. Forcer l'arrêt de tous les conteneurs utilisant le port 5000
+          echo "[INFO] Nettoyage du port 5000..."
+          docker ps -a --format "{{.ID}} {{.Ports}}" | grep "5000" | awk '{print $1}' | xargs -r docker stop 2>/dev/null || true
+          docker ps -a --format "{{.ID}} {{.Ports}}" | grep "5000" | awk '{print $1}' | xargs -r docker rm 2>/dev/null || true
+
           # 3. Vérification/Création du réseau
+          docker network prune -f 2>/dev/null || true
           docker network create $NETWORK_NAME 2>/dev/null || true
 
           # 4. Lancement du nouveau conteneur
