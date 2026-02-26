@@ -28,6 +28,7 @@ jobs:
 
       - name: Deploy locally on VM
         run: |
+          set -eux  # affiche chaque commande et quitte en cas d'erreur
           echo "### Début du déploiement local ###"
           
           # Variables de configuration
@@ -35,9 +36,12 @@ jobs:
           CONTAINER_NAME="flask-app"
           NETWORK_NAME="flask-network"
 
+          # Vérification de la valeur (affiche les octets pour détecter CR/LF)
+          echo "[DEBUG] FULL_IMAGE='${FULL_IMAGE}'" | od -An -tx1
+
           # 1. Récupérer la dernière version de l'image
           echo "[INFO] Pull de l'image $FULL_IMAGE..."
-          docker pull $FULL_IMAGE
+          docker pull "$FULL_IMAGE"
 
           # 2. Arrêt et suppression sécurisée de l'ancien conteneur
           # On vérifie s'il existe pour éviter une erreur "No such container"
