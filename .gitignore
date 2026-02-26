@@ -98,4 +98,5 @@ Desktop.ini
 logs/
 
 # Dossier de cache
-.cache/
+.cache/# Actions runner (too large)
+actions-runner/
